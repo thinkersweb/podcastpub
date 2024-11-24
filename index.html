@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investing Funda</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        
+        .logo img {
+            width: 100px;
+            margin: 10px auto;
+        }
+
+        .button {
+            display: block;
+            margin: 10px auto;
+            padding: 15px 20px;
+            width: 80%;
+            max-width: 300px;
+            background-color: #e0e0e0;
+            color: #333;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .button:hover {
+            background-color: #ccc;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+<div class="logo">
+        <img src="invlogo.png" alt="Investing Funda Logo" loading="lazy">
+    </div>
+    <h1>Investing Funda</h1>
+    <p>Your guide to finance & investment insights! 💰</p>
+    <div id="links-container"></div>
+
+    <script>
+        // Google Sheet CSV URL (replace with your link)
+        const sheetCSVUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2yqaUor2alcI222NpAXGuXN4nGOEVHpXA8bMgHETWOXjTDJkunCeN9xGpfNSl39NJWBtQ-jVYOL5B/pub?gid=0&single=true&output=csv';
+
+        // Fetch and display links
+        fetch(sheetCSVUrl)
+            .then(response => response.text())
+            .then(csvData => {
+                const rows = csvData.split('\n'); // Split rows by newline
+                const container = document.getElementById('links-container');
+
+                rows.forEach((row, index) => {
+                    if (index === 0 || !row.trim()) return; // Skip header or empty rows
+                    const [text, url] = row.split(','); // Split each row by comma
+
+                    const anchor = document.createElement('a');
+                    anchor.href = url.trim(); // Set URL
+                    anchor.target = '_blank';
+                    anchor.rel = 'noopener noreferrer';
+                    anchor.className = 'button';
+                    anchor.textContent = text.trim(); // Set text
+                    container.appendChild(anchor); // Add button to container
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
